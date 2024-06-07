@@ -17,13 +17,13 @@ namespace Sender_Demo
 				using (IConnection connection = factory.CreateConnection())
 				using (IModel channel = connection.CreateModel())
 				{
-					IDictionary<string, object> arguments = new Dictionary<string, object>() { };
-					channel.QueueDeclare(queue: "q.event.client1", durable: true, exclusive: false, autoDelete: false, arguments: arguments);
-
-					string message = "Hello RabbitMQ!";
+					string message = $"Hello RabbitMQ #{new Random().Next()}!";
 					byte[] encodedMessage = Encoding.UTF8.GetBytes(message);
 
-					channel.BasicPublish(exchange: "", routingKey: "BasicTest", body: encodedMessage);
+					channel.BasicPublish(
+						exchange: "",
+						routingKey: "BasicTest",
+						body: encodedMessage);
 					Console.WriteLine("Message sent.");
 				}
 			}
