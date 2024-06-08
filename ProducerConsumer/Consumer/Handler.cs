@@ -26,8 +26,8 @@ namespace Handler_Demo
 
 				channel.BasicConsume(
 					queue: "BasicTest",
-					autoAck: false,
-					consumerTag: "",
+					autoAck: true,
+					consumerTag: "",	
 					consumer: consumer);
 
 				Console.WriteLine();
