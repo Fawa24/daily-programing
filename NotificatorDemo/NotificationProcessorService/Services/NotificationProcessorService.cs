@@ -55,8 +55,6 @@ namespace NotificationProcessor.Services
 					queue: "q.notificator.demo",
 					autoAck: false,
 					consumer: consumer);
-
-
 			}
 
 			await Task.Delay(Timeout.Infinite, stoppingToken);
