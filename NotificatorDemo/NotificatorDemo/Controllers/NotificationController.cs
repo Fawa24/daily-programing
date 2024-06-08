@@ -22,6 +22,7 @@ namespace NotificatorDemo.Controllers
 			};
 		}
 
+		[HttpPost("/notify")]
 		public async Task<ActionResult<string>> Index()
 		{
 			NotificationRequest request = NotificationRequest.GetNotification();
