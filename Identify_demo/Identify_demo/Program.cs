@@ -19,5 +19,6 @@ var app = builder.Build();
 
 app.UseRouting();
 app.MapControllers();
+app.UseAuthorization(); // Write only after routing and controllers
 
 app.Run();

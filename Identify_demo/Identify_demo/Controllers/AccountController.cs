@@ -1,5 +1,6 @@
 ﻿using Identify_demo.Core.Domain.Entities;
 using Identify_demo.Core.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,23 +10,23 @@ namespace Identify_demo.Web.Controllers
 	public class AccountController : ControllerBase
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
+		private readonly SignInManager<ApplicationUser> _signInManager;
 
-		public AccountController(UserManager<ApplicationUser> userManager)
+		public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
 		{
 			_userManager = userManager;
+			_signInManager = signInManager;
 		}
 
 		[HttpPost("register")]
 		public async Task<ActionResult> Register(RegisterDTO registerDTO)
 		{
-			// TO DO: Check for validation errors
 			if (!ModelState.IsValid)
 			{
 				List<string> validationErrors = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).ToList();
 				return BadRequest(validationErrors);
 			}
 
-			// TO DO: If there are no errors, store new user into db
 			ApplicationUser user = new ApplicationUser()
 			{
 				UserName = registerDTO.UserName,
@@ -37,6 +38,7 @@ namespace Identify_demo.Web.Controllers
 
 			if (result.Succeeded)
 			{
+				await _signInManager.SignInAsync(user, isPersistent: false);
 				return Ok("Registration is succesfull");
 			}
 
@@ -47,6 +49,37 @@ namespace Identify_demo.Web.Controllers
 
 			List<string> errors = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).ToList();
 			return BadRequest(errors);
+		}
+
+		[HttpPost("login")]
+		public async Task<ActionResult> Login(LoginDTO loginDTO)
+		{
+			if (!ModelState.IsValid)
+			{
+				List<string> validationErrors = ModelState.Values.SelectMany(x => x.Errors).Select(x => x.ErrorMessage).ToList();
+				return BadRequest(validationErrors);
+			}
+
+			var result = await _signInManager.PasswordSignInAsync(
+				loginDTO.UserName,
+				password: loginDTO.Password,
+				isPersistent: false,
+				lockoutOnFailure: false);
+
+			if (result.Succeeded)
+			{
+				return Ok("Signed in succesfully");
+			}
+
+			return BadRequest("Invalid username or password");
+		}
+
+		[HttpPost("logout")]
+		[Authorize]
+		public async Task<ActionResult> Logout()
+		{
+			await _signInManager.SignOutAsync();
+			return Ok("Signed out succesfully");
 		}
 	}
 }
