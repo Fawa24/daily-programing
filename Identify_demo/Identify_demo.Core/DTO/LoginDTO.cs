@@ -5,9 +5,9 @@ namespace Identify_demo.Core.DTO
 	public class LoginDTO
 	{
 		[Required(ErrorMessage = "User name can not be blank")]
-		public string UserName { get; set; }
+		public string UserName { get; set; } = null!;
 
 		[Required(ErrorMessage = "Password can not be blank")]
-		public string Password { get; set; }
+		public string Password { get; set; } = null!;
 	}
 }
