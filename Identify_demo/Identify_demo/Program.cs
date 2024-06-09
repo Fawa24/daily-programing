@@ -4,6 +4,7 @@ using Identify_demo.Infrastructure.DbContexts;
 using Identify_demo.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,8 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
 	.AddEntityFrameworkStores<UsersDbContext>()
 	.AddUserStore<UserStore<ApplicationUser, ApplicationRole, UsersDbContext, Guid>>()
 	.AddRoleStore<RoleStore<ApplicationRole, UsersDbContext, Guid>>();
+builder.Services.AddScoped<NotificationRepository>();
+builder.Services.AddSingleton<ConnectionFactory>();
 builder.Services.AddControllers();
 
 var app = builder.Build();

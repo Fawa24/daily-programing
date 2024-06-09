@@ -25,6 +25,7 @@ namespace Identify_demo.Infrastructure.Repositories
 			return await _db.Notifications
 				.Include(nameof(Notification.Sender))
 				.Include(nameof(Notification.Recipient))
+				.Where(n => n.Recipient.UserName == username)
 				.ToListAsync();
 		}
 

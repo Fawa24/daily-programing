@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Identify_demo.Core.DTO;
+using Identify_demo.Infrastructure.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RabbitMQ.Client;
 using System.Text;
@@ -11,13 +13,13 @@ namespace Identify_demo.Web.Controllers
 	public class NotificationController : ControllerBase
 	{
 		private readonly ConnectionFactory _connectionFactory;
+		private readonly NotificationRepository _notificationRepository;
 
-		public NotificationController()
+		public NotificationController(ConnectionFactory connectionFactory, NotificationRepository notificationRepository)
 		{
-			_connectionFactory = new ConnectionFactory()
-			{
-				HostName = "localhost"
-			};
+			_connectionFactory = connectionFactory;
+			_connectionFactory.HostName = "localhost";
+			_notificationRepository = notificationRepository;
 		}
 
 		[HttpPost("send")]
@@ -49,12 +51,16 @@ namespace Identify_demo.Web.Controllers
 
 				return Ok("Notification has been published");
 			}
+		}
 
-			/*[HttpGet("notifications")]
-			public async Task<ActionResult<List<>>> GetNotifications()
-			{
-				List
-			}*/
+		[HttpGet("notifications")]
+		public async Task<ActionResult<List<NotificationResponce>>> GetNotifications()
+		{
+			string username = User?.Identity?.Name;
+			List<NotificationResponce> result = (await _notificationRepository.GetUserNotifications(username))
+				.Select(n => n.ToNotificationResponce()).ToList();
+
+			return Ok(result);
 		}
 	}
 }
