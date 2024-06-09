@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Identify_demo.Core.DTO;
+using Identify_demo.Infrastructure.Repositories;
+using Microsoft.Extensions.Hosting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using System.Text;
@@ -9,10 +11,13 @@ namespace NotificationProcessor
 	public class NotificationProcessorService : BackgroundService
 	{
 		private readonly ConnectionFactory _connectionFactory;
+		private readonly NotificationRepository _db;
 
-		public NotificationProcessorService()
+		public NotificationProcessorService(ConnectionFactory connectionFactory, NotificationRepository notificationRepository)
 		{
-			_connectionFactory = new ConnectionFactory() { HostName = "localhost" };
+			_connectionFactory = connectionFactory;
+			_connectionFactory.HostName = "localhost";
+			_db = notificationRepository;
 		}
 
 		protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -29,7 +34,7 @@ namespace NotificationProcessor
 
 				var consumer = new EventingBasicConsumer(channel);
 
-				consumer.Received += Consumer_Received;
+				consumer.Received += async (sender, e) => await Consumer_ReceivedAsync(sender, e);
 
 				channel.BasicConsume(
 					queue: "q.emergency-notificator",
@@ -40,7 +45,7 @@ namespace NotificationProcessor
 			}
 		}
 
-		private void Consumer_Received(object? sender, BasicDeliverEventArgs e)
+		private async Task Consumer_ReceivedAsync(object? sender, BasicDeliverEventArgs e)
 		{
 			var body = e.Body.ToArray();
 			var message = Encoding.UTF8.GetString(body);
@@ -50,7 +55,15 @@ namespace NotificationProcessor
 			{
 				foreach (var recipient in notificationRequest.Recipients)
 				{
-					Console.WriteLine(recipient);
+					AddNotificationRequest addRequest = new AddNotificationRequest()
+					{
+						Message = notificationRequest.Message,
+						SenderName = notificationRequest.Sender,
+						RecipientName = recipient
+					};
+
+					await _db.AddNotification(_db.ToNotification(addRequest));
+					await Console.Out.WriteLineAsync("Added succesfully");
 				}
 			}
 			catch (NullReferenceException ex)

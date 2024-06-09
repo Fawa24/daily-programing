@@ -1,9 +1,8 @@
-﻿using Identify_demo.Core.DTO;
-
-namespace Identify_demo.Core.Domain.RepositoryContracts
+﻿namespace Identify_demo.Core.Domain.RepositoryContracts
 {
 	public interface INotificationRepository
 	{
-		public Task<List<NotificationResponce>> GetUserNotifications(string username);
+		public Task<List<Notification>> GetUserNotifications(string username);
+		public Task AddNotification(Notification notification);
 	}
 }

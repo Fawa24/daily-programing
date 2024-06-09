@@ -1,6 +1,9 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Identify_demo.Infrastructure.DbContexts;
+using Identify_demo.Infrastructure.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NotificationProcessor;
+using RabbitMQ.Client;
 
 public static class Program
 {
@@ -13,6 +16,9 @@ public static class Program
 		Host.CreateDefaultBuilder()
 		.ConfigureServices((hostContext, services) =>
 		{
+			services.AddSingleton<ConnectionFactory>();
+			services.AddDbContext<UsersDbContext>();
+			services.AddScoped<NotificationRepository>();
 			services.AddHostedService<NotificationProcessorService>();
 		});
 }

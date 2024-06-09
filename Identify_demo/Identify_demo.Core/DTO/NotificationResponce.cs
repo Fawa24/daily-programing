@@ -1,6 +1,4 @@
-﻿using Identify_demo.Core.Domain.Entities;
-
-namespace Identify_demo.Core.DTO
+﻿namespace Identify_demo.Core.DTO
 {
 	public class NotificationResponce
 	{
@@ -17,8 +15,8 @@ namespace Identify_demo.Core.DTO
 			return new NotificationResponce
 			{
 				NotificationId = notification.NotificationId,
-				Sender = notification.GetSenderName(),
-				Recipient = notification.GetRecipientName(),
+				Sender = notification.Sender.UserName,
+				Recipient = notification.Recipient.UserName,
 				Message = notification.Message
 			};
 		}
