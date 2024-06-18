@@ -60,9 +60,43 @@ Console.WriteLine("float is 32-bits non-integer datatype with the accuracy to 7 
 Console.WriteLine("float: 10/3 = " + float_var);
 Console.WriteLine("double is 64-bits non-integer datatype with the accuracy to 15-16 significant digits");
 Console.WriteLine("double: 10/3 = " + double_var + "\n");
+
 // різниця між float та double полягає у точності,
 // розміру області значень та необхідній пам'яті
 // (double надає більшу точність, має більшу область значень,
 // але і потребує 64 біти, в той час як float - 32)
+
+string str1 = "Some text";
+string str2 = "Some text";
+// Всі операції зміни string, такі як конкатенація,
+// відбуваються шляхом створення нового об'єкта string,
+// що може призводити до додаткових видатків пам'яті.
+
+// string є особливим, оскільки він є reference type,
+// але з деякими особливостями, які дозволяють йому
+// вести себе подібно до value type у певних випадках.
+
+// Компілятор C# автоматично оптимізує літеральні рядки,
+// щоб вони використовували один і той же об'єкт в пам'яті,
+// якщо вони мають однакове значення.
+// Це називається "стрічковий пул" (string pool).
+
+Console.WriteLine("If two string variables have same value, they will be equal as a value types (cause of string pool)");
+Console.WriteLine("(str1 == str2) => " + (str1 == str2) + "\n");
+
+string word = "word";
+Console.WriteLine("Word before using it in the method: " + word);
+
+void StringChanger(string stringToChange)
+{
+	Console.WriteLine("stringToChange before changes: " + stringToChange);
+	stringToChange = stringToChange + " has been changed";
+	Console.WriteLine("stringToChange after changes: " + stringToChange);
+}
+StringChanger(word);
+
+Console.WriteLine("Word after using it in the method: " + word + "\n");
+Console.WriteLine("While we trying to change a string, we are not changing it, we are actually creating a new one.");
+Console.WriteLine("Thats why global string variable value doesnt change after we try to change it in the method");
 
 Console.ReadKey();
