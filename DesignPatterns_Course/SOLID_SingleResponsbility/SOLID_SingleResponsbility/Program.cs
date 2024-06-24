@@ -1,4 +1,6 @@
-﻿namespace DesignPatterns
+﻿using System.Diagnostics;
+
+namespace DesignPatterns
 {
 	public class Journal
 	{
@@ -23,6 +25,17 @@
 		}
 	}
 
+	public class Persistence
+	{
+		public void SaveToFinal(Journal journal, string filename, bool overwrite = false)
+		{
+			if (overwrite || !File.Exists(filename))
+			{
+				File.WriteAllText(filename, journal.ToString());
+			}
+		}
+	}
+
 	public static class Program
 	{
 		public static void Main(string[] args)
@@ -33,6 +46,20 @@
 			journal.AddEntry("I ate a bug");
 
 			Console.WriteLine(journal.ToString());
+
+			var persistence = new Persistence();
+			var fileName = @"c:\temp\journal.txt";
+
+			persistence.SaveToFinal(journal, fileName, true);
+
+			if (File.Exists(fileName))
+			{
+				Process.Start(new ProcessStartInfo(fileName) { UseShellExecute = true });
+			}
+			else
+			{
+				Console.WriteLine($"File {fileName} does not exist.");
+			}
 		}
 	}
 }
