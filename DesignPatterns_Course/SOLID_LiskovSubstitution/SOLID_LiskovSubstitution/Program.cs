@@ -4,8 +4,8 @@ namespace DesignPatterns
 {
 	public class Rectangle
 	{
-		public int Width { get; set; }
-		public int Height { get; set; }
+		public virtual int Width { get; set; }
+		public virtual int Height { get; set; }
 
 		public Rectangle()
 		{
@@ -26,7 +26,7 @@ namespace DesignPatterns
 
 	public class Square : Rectangle
 	{
-		public new int Width
+		public override int Width
 		{
 			set
 			{
@@ -34,7 +34,7 @@ namespace DesignPatterns
 			}
 		}
 
-		public new int Height
+		public override int Height
 		{
 			set
 			{
@@ -51,7 +51,7 @@ namespace DesignPatterns
 
 			WriteLine($"{rc} has area: {Area(rc)}");
 
-			Square sq = new Square();
+			Rectangle sq = new Square();
 			sq.Width = 4;
 
 			WriteLine($"{sq} has area: {Area(sq)}");
