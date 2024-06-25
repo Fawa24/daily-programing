@@ -5,14 +5,22 @@
 
 	}
 
-	public interface IMAchine
+	public interface IPrinter
 	{
 		void Print(Document document);
+	}
+
+	public interface IScaner
+	{
 		void Scan(Document document);
+	}
+
+	public interface IFaxer
+	{
 		void Fax(Document document);
 	}
 
-	public class MultiFunctionPrinter : IMAchine
+	public class MultiFunctionPrinter : IPrinter, IFaxer, IScaner
 	{
 		public void Fax(Document document)
 		{
@@ -30,21 +38,11 @@
 		}
 	}
 
-	public class OldFashionedPrinter : IMAchine
+	public class OldFashionedPrinter : IFaxer
 	{
 		public void Fax(Document document)
 		{
 			// implementation
-		}
-
-		public void Print(Document document)
-		{
-			throw new NotImplementedException(); // no implementation
-		}
-
-		public void Scan(Document document)
-		{
-			throw new NotImplementedException(); // no implementation
 		}
 	}
 
