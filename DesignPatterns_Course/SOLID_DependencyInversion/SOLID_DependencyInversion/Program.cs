@@ -10,8 +10,13 @@
 		public string Name = null!;
 	}
 
+	public interface IRelationshipBrowser
+	{
+		IEnumerable<Person> FindAllChildrenOf(string parentName);
+	}
+
 	// low-level module
-	public class Relationships
+	public class Relationships : IRelationshipBrowser
 	{
 		private List<(Person, Relationship, Person)> relationships = new List<(Person, Relationship, Person)>();
 
@@ -21,19 +26,24 @@
 			relationships.Add((child, Relationship.Child, parent));
 		}
 
-		public List<(Person, Relationship, Person)> Relations => relationships;
+		public IEnumerable<Person> FindAllChildrenOf(string parentName)
+		{
+			foreach (var rel in relationships.Where(x => x.Item1.Name == parentName && x.Item2 == Relationship.Parent))
+			{
+				yield return rel.Item3;
+			}
+		}
 	}
 
 	// high-level module
 	public class Research
 	{
-		public Research(Relationships relationships)
+		public Research(IRelationshipBrowser browser)
 		{
-			var relations = relationships.Relations;
-			foreach (var rel in relations.Where(x => x.Item1.Name == "Jhon" && x.Item2 == Relationship.Parent))
+			foreach (var p in browser.FindAllChildrenOf("Jhon"))
 			{
-                Console.WriteLine($"Jhon has a child called {rel.Item3.Name}");
-            }
+				Console.WriteLine($"Jhon has children named {p.Name}");
+			}
 		}
 
 		public static void Main(string[] args)
