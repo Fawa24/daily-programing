@@ -1,16 +1,20 @@
 import logo from './logo.svg';
 import './App.css';
 import './styles.css';
+import Header from './components/Header';
 
 function App() {
   return (
     <div className="App">
-      <header className="header">
-        <h1>Welcome to Moviedux</h1>
-      </header>
+
+      <div className='container'>
+        <Header></Header>
+      </div>
+
       <footer className='footer'>
         <p className='footer'>Footer content here</p>
       </footer>
+      
     </div>
   );
 }
