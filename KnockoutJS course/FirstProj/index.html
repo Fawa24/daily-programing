@@ -7,9 +7,11 @@
   <title>Document</title>
 </head>
 <body>
-  <input type="text" data-bind="value: viewModel.todo" style="width: 240px;" />
+  <input type="text" data-bind="value: todo" style="width: 240px;" />
+  <input type="text" data-bind="value: completed" style="width: 240px;" />
+  <input type="text" data-bind="value: state" style="width: 240px;" />
 
-  <div data-bind="text: viewModel.todo"></div>
+  <div data-bind="text: state"></div>
 
   <script src="app.js"></script>
 </body>
