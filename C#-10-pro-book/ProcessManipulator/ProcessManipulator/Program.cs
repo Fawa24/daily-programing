@@ -6,9 +6,45 @@ namespace ProcessManipulatorDemo
 	{
 		public static void Main(string[] args)
 		{
-			ListAllRunningProcesses();
-			Br();
-			Process.GetProcessById(4736).Display();
+			while (true)
+			{
+				ListAllRunningProcesses();
+				Br();
+
+				int pid = -1;
+				while (pid < 0)
+				{
+					Console.Write("Enter the PID: ");
+					var input = Console.ReadLine();
+					if (input == null)
+					{
+						Console.WriteLine("Invalid input. Enter valid PID.");
+						continue;
+					}
+
+					pid = int.Parse(input);
+
+					try
+					{
+						Process.GetProcessById(pid);
+					}
+					catch (Exception ex)
+					{
+						Console.WriteLine("None process mathes this PID. Try again.");
+						continue;
+					}
+				}
+
+				Br();
+				Process.GetProcessById(pid).Display();
+				Br();
+				EnumThreadsForPid(pid);
+				Br();
+
+				Console.Write("Press any button to continue: ");
+				Console.ReadKey();
+				Console.Clear();
+			}
 		}
 
 		/// <summary>
@@ -16,7 +52,7 @@ namespace ProcessManipulatorDemo
 		/// </summary>
 		static void Br()
 		{
-			Console.WriteLine("******************   ******************   ******************");
+			Console.WriteLine("\n******************   ******************   ******************\n");
 		}
 
 		/// <summary>
@@ -31,6 +67,35 @@ namespace ProcessManipulatorDemo
 			foreach (var process in runningProcesses)
 			{
 				process.Display();
+			}
+		}
+
+		static void EnumThreadsForPid(int pid)
+		{
+			Process proc = null;
+
+			try
+			{
+				proc = Process.GetProcessById(pid);
+			}
+			catch (ArgumentException ex)
+			{
+				Console.WriteLine(ex.Message);
+				return;
+			}
+
+			Console.WriteLine($"Here are the threads used by {proc.ProcessName}");
+			var threads = proc.Threads;
+
+			if (threads.Count == 0)
+			{
+				Console.WriteLine("No threads used by a process");
+			}
+
+			foreach (ProcessThread thread in threads)
+			{
+				string info = $"Id: {thread.Id}\t   Start time: {thread.StartTime}\t   Priority: {thread.PriorityLevel}";
+				Console.WriteLine(info);
 			}
 		}
 	}
