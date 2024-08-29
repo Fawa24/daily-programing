@@ -1,4 +1,5 @@
-﻿using Lab_1.Interfaces;
+﻿using Lab_1.DTOs;
+using Lab_1.Interfaces;
 using Lab_1.Models;
 
 namespace Lab_1.Services
@@ -49,6 +50,19 @@ namespace Lab_1.Services
 		public Author? GetAuthorById(int id)
 		{
 			return _authors.FirstOrDefault(a => a.Id == id);
+		}
+
+		public bool UpdateAuthor(UpdateAuthorDTO author, int authorId)
+		{
+			var authorToUpdate = _authors.FirstOrDefault(a => a.Id == authorId);
+
+			if (authorToUpdate != null)
+			{
+				authorToUpdate.Name = author.Name;
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

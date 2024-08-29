@@ -1,4 +1,5 @@
-﻿using Lab_1.Models;
+﻿using Lab_1.DTOs;
+using Lab_1.Models;
 
 namespace Lab_1.Interfaces
 {
@@ -8,5 +9,6 @@ namespace Lab_1.Interfaces
 		public Book? GetBookById(int id);
 		public bool DeleteBookById(int id);
 		public bool AddBook(Book book);
+		public bool UpdateBook(UpdateBookDTO book, int bookId);
 	}
 }

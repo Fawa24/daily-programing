@@ -1,4 +1,5 @@
-﻿using Lab_1.Interfaces;
+﻿using Lab_1.DTOs;
+using Lab_1.Interfaces;
 using Lab_1.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,6 +53,16 @@ namespace Lab_1.Controllers
 			}
 
 			return BadRequest($"Invalid input: no book has {id} id");
+		}
+
+		[HttpPost("books/{id}")]
+		public ActionResult UpdateBook([FromBody] UpdateBookDTO book, int id)
+		{
+			if (_booksService.UpdateBook(book, id))
+			{
+				return Ok("Updated successfuly");
+			}
+			return BadRequest("Something went wrong");
 		}
 	}
 }
