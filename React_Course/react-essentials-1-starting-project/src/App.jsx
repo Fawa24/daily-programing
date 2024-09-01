@@ -1,3 +1,10 @@
+const adjectivesArray = ['Fundamental', 'Crucial', 'Core'];
+
+function getRandomAdjective() {
+  let index = Math.floor(Math.random() * (adjectivesArray.length));
+  return (adjectivesArray[index]);
+}
+
 function App() {
   return (
     <div>
@@ -11,12 +18,14 @@ function App() {
 
 
 function Header() {
+const description = getRandomAdjective();
+
   return(
     <header>
         <img src="src/assets/react-core-concepts.png" alt="Stylized atom" />
         <h1>React Essentials</h1>
         <p>
-          Fundamental React concepts you will need for almost any app you are
+          {description} React concepts you will need for almost any app you are
           going to build!
         </p>
       </header>
