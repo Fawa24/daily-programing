@@ -1,4 +1,5 @@
 const adjectivesArray = ['Fundamental', 'Crucial', 'Core'];
+import reactImage from './assets/react-core-concepts.png'
 
 function getRandomAdjective() {
   let index = Math.floor(Math.random() * (adjectivesArray.length));
@@ -22,7 +23,7 @@ const description = getRandomAdjective();
 
   return(
     <header>
-        <img src="src/assets/react-core-concepts.png" alt="Stylized atom" />
+        <img src={reactImage} alt="Stylized atom" />
         <h1>React Essentials</h1>
         <p>
           {description} React concepts you will need for almost any app you are
