@@ -15,10 +15,10 @@ function App() {
         <section id='core-concepts'>
           <h2>Concepts</h2>
           <ul>
-            <CoreConcept title={CORE_CONCEPTS[0].title} description={CORE_CONCEPTS[0].description} img={CORE_CONCEPTS[0].image}/>
-            <CoreConcept title={CORE_CONCEPTS[1].title} description={CORE_CONCEPTS[1].description} img={CORE_CONCEPTS[1].image}/>
-            <CoreConcept title={CORE_CONCEPTS[2].title} description={CORE_CONCEPTS[2].description} img={CORE_CONCEPTS[2].image}/>
-            <CoreConcept title={CORE_CONCEPTS[3].title} description={CORE_CONCEPTS[3].description} img={CORE_CONCEPTS[3].image}/>
+            <CoreConcept {...CORE_CONCEPTS[0]}/>
+            <CoreConcept {...CORE_CONCEPTS[1]}/>
+            <CoreConcept {...CORE_CONCEPTS[2]}/>
+            <CoreConcept {...CORE_CONCEPTS[3]}/>
           </ul>
         </section>
         <h2>Time to get started!</h2>
@@ -27,10 +27,10 @@ function App() {
   );
 }
 
-function CoreConcept({title, description, img}) {
+function CoreConcept({title, description, image}) {
   return(
     <li>
-      <img src={img} alt=''/>
+      <img src={image} alt=''/>
       <h3>{title}</h3>
       <p>{description}</p>
     </li>
