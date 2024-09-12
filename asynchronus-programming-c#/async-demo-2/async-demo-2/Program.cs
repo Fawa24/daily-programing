@@ -2,25 +2,26 @@
 {
 	public static class Program
 	{
-		public static void Main()
+		public async static Task Main()
 		{
-			MakeTea();
+			await MakeTeaAsync();
 		}
 
-		public static string MakeTea()
+		public async static Task<string> MakeTeaAsync()
 		{
-			var water = BoilWater();
+			var boiling = BoilWaterAsync();
 			Console.WriteLine("take the cups out");
 			Console.WriteLine("put tea in cups");
+			var water = await boiling;
 			var tea = $"pour {water} in cups";
 			Console.WriteLine(tea);
 			return tea;
 		}
 
-		public static string BoilWater()
+		public async static Task<string> BoilWaterAsync()
 		{
 			Console.WriteLine("Start the kettle");
-			Task.Delay(2000).GetAwaiter().GetResult();
+			await Task.Delay(2000);
 
 			Console.WriteLine("kettle finished boiling");
 
