@@ -7,7 +7,8 @@ namespace ProcessManipulator
 		static void Main(string[] args)
 		{
 			ListCurrentProcesses();
-			EnumThreadsForPID(1384);
+			var pid = AskUserForValidPID();
+			EnumThreadsForPID(pid);
 		}
 
 		public static void ListCurrentProcesses()
@@ -23,6 +24,30 @@ namespace ProcessManipulator
 				Console.WriteLine($"PID: {proc.Id}  \tName: {proc.ProcessName}");
 			}
 			Console.WriteLine("\n**************************************************\n");
+		}
+
+		public static int AskUserForValidPID()
+		{
+			int pid = 0;
+			bool isOperationSucessfull = false;
+
+			while (!isOperationSucessfull)
+			{
+				string? input = Console.ReadLine();
+
+				try
+				{
+					pid = int.Parse(input);
+					Process.GetProcessById(pid);
+					isOperationSucessfull = true;
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine("Invalid PID. Try again");
+				}
+			}
+
+			return pid;
 		}
 
 		public static void EnumThreadsForPID(int pID)
