@@ -6,6 +6,11 @@ namespace ProcessManipulator
 	{
 		static void Main(string[] args)
 		{
+			ListCurrentProcesses();
+		}
+
+		public static void ListCurrentProcesses()
+		{
 			var runningProcesses =
 				from proc
 				in Process.GetProcesses()
