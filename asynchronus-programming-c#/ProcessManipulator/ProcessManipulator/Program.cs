@@ -16,6 +16,7 @@ namespace ProcessManipulator
 			Console.ReadKey();
 
 			StartAndKillProcess();
+			UseapplicationVerbs();
 		}
 
 		public static void ListCurrentProcesses()
@@ -142,6 +143,25 @@ namespace ProcessManipulator
 				Console.WriteLine(e.Message);
 				return;
 			}
+
+			Console.WriteLine("\n**************************************************\n");
+		}
+
+		public static void UseapplicationVerbs()
+		{
+			int i = 0;
+
+			var startInfo = new ProcessStartInfo(@"C:\Users\ofegl\OneDrive\Документи\test.txt");
+
+			foreach (var verb in startInfo.Verbs)
+			{
+				Console.WriteLine($" {i++}:\t{verb}");
+			}
+
+			startInfo.WindowStyle = ProcessWindowStyle.Maximized;
+			startInfo.UseShellExecute = true;
+
+			Process.Start(startInfo);
 
 			Console.WriteLine("\n**************************************************\n");
 		}
