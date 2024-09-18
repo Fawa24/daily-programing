@@ -14,6 +14,8 @@ namespace ProcessManipulator
 			EnumModsForPid(pid);
 
 			Console.ReadKey();
+
+			StartAndKillProcess();
 		}
 
 		public static void ListCurrentProcesses()
@@ -101,6 +103,43 @@ namespace ProcessManipulator
 			foreach (ProcessModule module in proc.Modules)
 			{
 				Console.WriteLine($"Mod name: {module.ModuleName}");
+			}
+
+			Console.WriteLine("\n**************************************************\n");
+		}
+
+		public static void StartAndKillProcess()
+		{
+			Process proc = null;
+
+			var exePath = @"C:\Program Files\Internet Explorer\iexplore.exe";
+			var argument = "www.facebook.com";
+			var procToKill = "msedge";
+
+			try
+			{
+				proc = Process.Start(exePath, argument);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				return;
+			}
+
+			Console.WriteLine($"--> Hit Entre to kill {proc.ProcessName}");
+			Console.ReadKey();
+
+			try
+			{
+				foreach (var p in Process.GetProcessesByName(procToKill))
+				{
+					p.Kill(true);
+				}
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e.Message);
+				return;
 			}
 
 			Console.WriteLine("\n**************************************************\n");
