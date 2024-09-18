@@ -7,8 +7,13 @@ namespace ProcessManipulator
 		static void Main(string[] args)
 		{
 			ListCurrentProcesses();
+
 			var pid = AskUserForValidPID();
+
 			EnumThreadsForPID(pid);
+			EnumModsForPid(pid);
+
+			Console.ReadKey();
 		}
 
 		public static void ListCurrentProcesses()
@@ -33,6 +38,7 @@ namespace ProcessManipulator
 
 			while (!isOperationSucessfull)
 			{
+				Console.Write("Enter the PID: ");
 				string? input = Console.ReadLine();
 
 				try
@@ -71,6 +77,30 @@ namespace ProcessManipulator
 			{
 				string info = $"Thread ID: {th.Id}  \tStart time: {th.StartTime.ToShortTimeString()} \tPriority: {th.PriorityLevel}";
 				Console.WriteLine(info);
+			}
+
+			Console.WriteLine("\n**************************************************\n");
+		}
+
+		public static void EnumModsForPid(int pid)
+		{
+			Process proc = null;
+
+			try
+			{
+				proc = Process.GetProcessById(pid);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine(ex.Message);
+				return;
+			}
+
+			Console.WriteLine($"Here are the loaded modules for {proc.ProcessName}\n");
+
+			foreach (ProcessModule module in proc.Modules)
+			{
+				Console.WriteLine($"Mod name: {module.ModuleName}");
 			}
 
 			Console.WriteLine("\n**************************************************\n");
