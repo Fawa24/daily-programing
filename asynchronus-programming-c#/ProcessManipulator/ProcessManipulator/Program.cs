@@ -112,13 +112,14 @@ namespace ProcessManipulator
 		{
 			Process proc = null;
 
-			var exePath = @"C:\Program Files\Internet Explorer\iexplore.exe";
-			var argument = "www.facebook.com";
-			var procToKill = "msedge";
+			var startInfo = new ProcessStartInfo("MsEdge", "www.facebook.com")
+			{
+				UseShellExecute = true
+			};
 
 			try
 			{
-				proc = Process.Start(exePath, argument);
+				proc = Process.Start(startInfo);
 			}
 			catch (Exception ex)
 			{
@@ -131,7 +132,7 @@ namespace ProcessManipulator
 
 			try
 			{
-				foreach (var p in Process.GetProcessesByName(procToKill))
+				foreach (var p in Process.GetProcessesByName(proc.ProcessName))
 				{
 					p.Kill(true);
 				}
